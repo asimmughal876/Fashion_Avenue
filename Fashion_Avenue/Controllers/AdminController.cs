@@ -20,7 +20,7 @@ namespace Fashion_Avenue.Controllers
 
         public IActionResult IndexAdmin()
         {
-            ViewData["User"] = db.UserRecords.Count();
+            ViewData["User"] = db.UserRecords.Where(u=> u.URoleId == 102).Count();
             ViewData["Product"] = db.Products.Count();
             ViewData["Like"] = db.ProductLikes.Count();
             ViewData["Coupon"] = db.Coupons.Count();
