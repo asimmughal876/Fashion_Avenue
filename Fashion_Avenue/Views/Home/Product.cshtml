@@ -1,0 +1,195 @@
+﻿@{
+    ViewData["Title"] = "Product";
+}
+@if (TempData.ContainsKey("Prod_Like"))
+{
+    var PL_M = TempData["Prod_Like"];
+    <script>
+        alert("@PL_M");
+    </script>
+}
+@model Fashion_Avenue.Models.IndexModel
+
+<script type="text/javascript" src="~/assets/vendor/noui/nouislider.min.js"></script>
+<script src="~/assets/js/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function fetchProducts() {
+            var sorting = $("#sorting").val();
+            var search = $("#search-product").val();
+            var colorId = $(".color-filter.active").attr("id")?.split('_')[2] || 0;
+            var catgId = $(".category-filter.active").attr("id")?.split('_')[2] || 0;
+
+            $.ajax({
+                url: "/Home/Product",
+                type: "GET",
+                data: { sorting: sorting, id: colorId, catgId: catgId, search: search },
+                success: function (data) {
+                    $('#product-list').html($(data).find('#product-list').html());
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        $("#sorting").change(function () {
+            fetchProducts();
+        });
+        $("#search-product").on('input', function () {
+            fetchProducts();
+        });
+
+        $(".color-filter").click(function () {
+            $(".color-filter").removeClass("active");
+            $(this).addClass("active");
+            fetchProducts();
+        });
+
+        $("#pr_color_0").click(function () {
+            $(".color-filter").removeClass("active");
+            $(this).addClass("active");
+            fetchProducts();
+        });
+
+        $(".category-filter").click(function () {
+            $(".category-filter").removeClass("active");
+            $(this).addClass("active");
+            fetchProducts();
+        });
+    });
+</script>
+
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(/assets/images/heading-pages-02.jpg);">
+    <h2 class="l-text2 t-center">
+        Women
+    </h2>
+    <p class="m-text13 t-center">
+        New Arrivals Women Collection 2018
+    </p>
+</section>
+
+<section class="bgwhite p-t-55 p-b-65">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+                <div class="leftbar p-r-20 p-r-0-sm">
+                    <h4 class="m-text14 p-b-7">
+                        Categories
+                    </h4>
+                    <ul class="p-b-54">
+                        <li class="p-t-4">
+                            <a id="catg_id_0" class="s-text13 category-filter active" style="cursor:pointer;">All</a>
+                        </li>
+                        @foreach (var catg in Model.Category)
+                        {
+                            <li class="p-t-4">
+                                <a id="catg_id_@catg.CId" style="cursor:pointer;" class="s-text13 category-filter">
+                                    @catg.CName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="filter-color p-t-22 p-b-50 bo3">
+                    <div class="m-text15 p-b-12">
+                        Color
+                        <a id="pr_color_0" class="d-block color-filter active" style="cursor:pointer;width:75px;">All Colors</a>
+                    </div>
+                    <ul class="flex-w">
+                        @foreach (var Prod_color in Model.ProductColor)
+                        {
+                            <li class="m-r-10">
+                                <a class="color-filter" id="pr_color_@Prod_color.PcId" style="background-color:@Prod_color.PcColor; cursor:pointer;"></a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="search-product pos-relative bo4 of-hidden">
+                    <input class="s-text7 size6 p-l-23 p-r-50" type="text" id="search-product" placeholder="Search Products...">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+                <div class="flex-sb-m flex-w p-b-35">
+                    <div class="flex-w">
+                        <div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+                            <select class="selection-2 form-control" id="sorting">
+                                <option value="default">Default Sorting</option>
+                                <option value="popular">Popularity</option>
+                                <option value="low">Price: low to high</option>
+                                <option value="high">Price: high to low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                @using System.Security.Claims;
+                <div id="product-list" class="row">
+                    @if (Model.Product_Count == 0)
+                    {
+                        <div style="text-align: center; width: 100%;">
+                            <p class="text-danger" style="font-weight: bold; display: inline-block;">
+                                No products found.
+                            </p>
+                        </div>
+                    }
+
+                    else
+                    {
+                        @foreach (var item in Model.Product)
+                        {
+                            bool likeid = false;
+                            var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                            if (userid != null)
+                            {
+                                if (Model.ProductLike != null)
+                                {
+                                    foreach (var like in Model.ProductLike)
+                                    {
+                                        if (like.PlProdId == item.PId && like.PlUser == int.Parse(userid))
+                                        {
+                                            likeid = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            <div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+                                <div class="block2">
+                                    <p class="text-danger fw-bold">@TempData["p_mess"]</p>
+
+
+                                    <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+                                        <img src="~/@item.PImage" alt="IMG-PRODUCT" style="aspect-ratio:4/5;">
+                                        <div class="block2-overlay trans-0-4">
+                                            @{
+                                                var color = likeid ? "#e65540" : "white";
+                                            }
+                                            <a asp-controller="Home" asp-action="ProductLike" asp-route-id="@item.PId" class="" style="display: block; position: absolute; top: 26px; right: 20px;font-size: 20px;color: white;line-height: 0;">
+                                                <i class="icon-wishlist icon_heart" style="display:block !important;color:@color!important;" aria-hidden="true"></i>
+                                            </a>
+                                            <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                <a asp-controller="Home" asp-action="AddtoCart" asp-route-id="@item.PId" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                    Add to Cart
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block2-txt p-t-20">
+                                        <a class="block2-name dis-block s-text3 p-b-5">
+                                            @item.PName
+                                        </a>
+                                        <span class="block2-price m-text6 p-r-5">
+                                            $@item.PPrice
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

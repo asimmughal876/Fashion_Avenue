@@ -1,0 +1,334 @@
+﻿@using System.Security.Claims
+
+@{
+    var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (userid != null)
+    {
+        var role = User.FindFirst(ClaimTypes.Role)?.Value;
+        if (role != "Admin")
+        {
+            TempData["admin"] = "Login As Admin to Access the Admin Panel";
+            Context.Response.Redirect(Url.Action("Index", "Home"));
+        }
+    }
+    else
+    {
+        TempData["admin"] = "Login As Admin to Access the Admin Panel";
+        Context.Response.Redirect(Url.Action("Index", "Home"));
+    }
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Fashion_Avenue</title>
+      <style>
+        .displayclass {
+            display: none;
+        }
+        .mainclass section {
+            padding-left: 0 !important;
+        }
+        .sectionclass {
+            padding-left: 0 !important;
+        }
+   
+        @@media (max-width: 991.1px) {
+            .displayclass {
+                display: block;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/css/bootstrap1.min.css" />
+    
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/themefy_icon/themify-icons.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/swiper_slider/css/swiper.min.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/select2/css/select2.min.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/niceselect/css/nice-select.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/owl_carousel/css/owl.carousel.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/gijgo/gijgo.min.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/font_awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/tagsinput/tagsinput.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/datatable/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/datatable/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/datatable/css/buttons.dataTables.min.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/text_editor/summernote-bs4.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/morris/morris.css">
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/vendors/material_icon/material-icons.css" />
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/css/metisMenu.css">
+
+    <link rel="stylesheet" href="~/assets/Admin_Panel/css/style1.css" />
+    <link rel="stylesheet" href="~/assets/Admin_Panel/css/colors/default.css" id="colorSkinCSS">
+
+</head>
+<body>
+
+
+    <nav class="sidebar" id="sidebar">
+        <div class="logo d-flex justify-content-between">
+            <a asp-controller="Admin" asp-action="IndexAdmin"><img src="~/assets/Admin_Panel/img/logo.png" alt></a>
+            <div class="sidebar_close_icon d-lg-none">
+                <i class="ti-close"></i>
+            </div>
+        </div>
+        <ul id="sidebar_menu">
+            <li class="mm-active">
+                <a class="" aria-expanded="false" asp-controller="Admin" asp-action="IndexAdmin">
+
+                    <img src="~/assets/Admin_Panel/img/menu-icon/1.svg" alt>
+                    <span>Dashboard</span>
+                </a>
+                <ul>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow" aria-expanded="false">
+                    <img src="~/assets/Admin_Panel/img/menu-icon/4.svg" alt>
+                    <span>Tables</span>
+                </a>
+                <ul>
+                    <li>
+                        <a class="has-arrow" aria-expanded="false">
+                            <span>Products</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Product">Fetch Product</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Product_Likes">Fetch Product Likes</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Total_Product_Likes">Total Product Likes</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Category">Fetch Category</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Color">Fetch Color</a>
+                            </li>
+                         </ul>
+                  </li>
+                    <li>
+                        <a class="has-arrow" aria-expanded="false">
+                            <span>Blog</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Blog">Fetch Blog</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Blog_Comment">Fetch Blog Comments</a>
+                            </li>
+                </ul>
+                    <li>
+                        <a class="has-arrow" aria-expanded="false">
+                                    <span>Coupon</span>
+                        </a>
+                        <ul>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Fetch_Coupon">Fetch Coupon</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Fetch_Used_Coupon">Fetch Used Coupon</a>
+                    </li>
+                           </ul>
+                         </li>
+
+                    <li>
+                        <a class="has-arrow" aria-expanded="false">
+                            <span>Cart</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Orders">Fetch Order</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Admin" asp-action="Fetch_Orders_Details">Fetch Delivered Order</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" aria-expanded="false">
+                            <span>User</span>
+                        </a>
+                        <ul>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Fetch_Users">Fetch Users</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Fetch_Contact">Fetch Contact</a>
+                    </li>
+                   
+                        </ul>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Fetch_About">Fetch About</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li >
+                <a class="has-arrow" aria-expanded="false">
+                    <img src="~/assets/Admin_Panel/img/menu-icon/6.svg" alt>
+                    <span>Forms</span>
+                </a>
+                <ul>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Product">Product</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Category">Category</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Blog">Blog</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Coupon">Coupon</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Color">Color</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="About">About</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+    <section class="dashboard_part main_content" id="dash" style="
+    width: 100%;
+    padding-top: 0 !important;
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+padding-bottom:0;
+min-height:auto;">
+    <div class="container-fluid g-0">
+        <div class="row">
+            <div class="col-lg-12 p-0">
+                <div class="header_iner d-flex justify-content-between align-items-center">
+                    <div class="sidebar_icon">
+                    </div>
+                    <div class="serach_field-area">
+                        <div class="search_inner">
+                                <div class="sidebar_icon">
+                                    <i class="ti-menu" onclick="display()" style="cursor:pointer;"></i>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="header_right d-flex justify-content-between align-items-center">
+                            <ul>
+                                @{
+                                    string userName = User.FindFirst(ClaimTypes.Name)?.Value;
+                                }
+                                @if (userName != null)
+                                {
+                                    <li>
+                                        <a style="text-decoration:none; color:black; font-size:16px;">@userName</a>
+
+                                        <a asp-controller="Home" asp-action="Logout" style="text-decoration:none; color:black; font-size:16px;">Log Out</a>
+                                    </li>
+                                }
+                                
+                            </ul>
+                              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+<div>
+        <main role="main" id="mainid" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+
+<footer>
+</footer>
+
+<script>
+    function display() {
+            let id = document.getElementById("sidebar");
+            let id2 = document.getElementById("mainid");
+            let id3 = document.getElementById("dash");
+
+            id.classList.toggle("displayclass");
+            id2.classList.toggle("mainclass");
+            id3.classList.toggle("sectionclass");
+            id3.classList.toggle("main_content");
+    }
+</script>
+
+
+    <script src="~/assets/Admin_Panel/js/jquery1-3.4.1.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/js/popper1.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/js/bootstrap1.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/js/metisMenu.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/count_up/jquery.waypoints.min.js"></script>
+     
+    <script src="~/assets/Admin_Panel/vendors/chartlist/Chart.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/count_up/jquery.counterup.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/swiper_slider/js/swiper.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/niceselect/js/jquery.nice-select.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/owl_carousel/js/owl.carousel.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/gijgo/gijgo.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/dataTables.responsive.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/buttons.flash.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/pdfmake.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/vfs_fonts.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/Admin_Panel/js/chart.min.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/progressbar/jquery.barfiller.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/tagsinput/tagsinput.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/text_editor/summernote-bs4.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/apex_chart/apexcharts.js"></script>
+
+    <script src="~/assets/Admin_Panel/js/custom.js"></script>
+
+    <script src="~/assets/Admin_Panel/js/active_chart.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/apex_chart/radial_active.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/apex_chart/stackbar.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/apex_chart/area_chart.js"></script>
+
+    <script src="~/assets/Admin_Panel/vendors/apex_chart/bar_active_1.js"></script>
+    <script src="~/assets/Admin_Panel/vendors/chartjs/chartjs_active.js"></script>
+</body>
+</html>

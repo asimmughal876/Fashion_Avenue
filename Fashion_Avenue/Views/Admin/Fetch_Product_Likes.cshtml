@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Fetch Product Like";
+}
+@model IEnumerable<Fashion_Avenue.Models.ProductLike>
+<section class="main_content dashboard_part">
+
+    <div class="main_content_iner ">
+        <div class="container-fluid plr_30 body_white_bg pt_30">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="QA_section">
+                        <div class="white_box_tittle list_header">
+                            <h4>Table</h4>
+                        </div>
+                        <div class="QA_table ">
+
+                            <table class="table lms_table_active">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Product Image</th>
+                                        <th>Product Like</th>
+                                        <th>User Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            @if (TempData.ContainsKey("L_Fetch_Mess"))
+                                            {
+                                                <td class="text-danger fw-bold">@TempData["L_Fetch_Mess"]</td>
+                                            }
+                                            <td>@item.PlProd.PName</td>
+                                            <td><img src="~/@item.PlProd.PImage" width="100" height="100" /></td>
+                                            <td>@item.PlCount</td>
+                                            <td>@item.PlUserNavigation.UName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="footer_part">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="footer_iner text-center">
+                        <p>2020 © Influence - Designed by<a href="#"> Dashboard</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

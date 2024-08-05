@@ -1,0 +1,89 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Fetch Category";
+}
+@model IEnumerable<Fashion_Avenue.Models.UserRecord>
+<script src="~/assets/js/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#search").on('input', function () {
+            var search = $(this).val();
+            $.ajax({
+                url: "@Url.Action("Fetch_Users", "Admin")",
+                type: "GET",
+                data: { search: search },
+                success: function (data) {
+                    $("#table tbody").html($(data).find("#table tbody").html());
+                }
+            })
+        });
+    });
+
+</script>
+<section class="main_content dashboard_part">
+
+    <div class="main_content_iner ">
+        <div class="container-fluid plr_30 body_white_bg pt_30">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="QA_section">
+                        <div class="white_box_tittle list_header">
+                            <h4>Table</h4>
+                            <div class="box_right d-flex lms_block">
+                                <div class="serach_field_2">
+                                    <div class="search_inner">
+                                        <form Active="#">
+                                            <div class="search_field">
+                                                <input type="text" id="search" placeholder="Search content here...">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="QA_table ">
+
+                            <table class="table lms_table_active" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>User Name</th>
+                                        <th>User Email</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            @if (TempData.ContainsKey("U_Fetch_Mess"))
+                                            {
+                                                <td class="text-danger fw-bold">@TempData["U_Fetch_Mess"]</td>
+                                            }
+                                            <td>@item.UName</td>
+                                            <td>@item.UEmail</td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
+    <div class="footer_part">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="footer_iner text-center">
+                        <p>2020 © Influence - Designed by<a href="#"> Dashboard</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

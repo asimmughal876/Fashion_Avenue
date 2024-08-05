@@ -1,0 +1,239 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model Fashion_Avenue.Models.IndexModel
+
+@if (TempData.ContainsKey("admin"))
+{
+    var AD_M = TempData["admin"];
+    <script>
+        alert("@AD_M");
+    </script>
+}
+   @{ 
+       TempData.Remove("admin");
+   }
+
+@if (TempData.ContainsKey("Prod_Like"))
+{
+    var PL_M = TempData["Prod_Like"];
+    <script>
+        alert("@PL_M");
+    </script>
+}
+@if (TempData.ContainsKey("Cart"))
+{
+    var C_M = TempData["Cart"];
+    <script>
+        alert("@C_M");
+    </script>
+}
+
+
+@if (TempData.ContainsKey("Login"))
+{
+    var L_M = TempData["Login"];
+    <script>
+        alert("@L_M");
+    </script>
+}
+<section class="slide1">
+<div class="wrap-slick1">
+<div class="slick1">
+  <div class="item-slick1 item1-slick1" style="background-image: url(/assets/images/master-slide-07.jpg);">
+<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170" style="">
+<h2 class="caption1-slide1 xl-text2 t-center bo14 p-b-6 animated visible-false m-b-22" data-appear="fadeInUp">
+Leather Bags
+</h2>
+
+<span class="caption2-slide1 m-text1 t-center animated visible-false m-b-33" data-appear="fadeInDown">
+New Collection 2024
+</span>
+<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="zoomIn">
+
+<a asp-controller="Home" asp-action="Product" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+Shop Now
+</a>
+</div>
+</div>
+</div>
+            <div class="item-slick1 item2-slick1" style="background-image: url(/assets/images/pexels-borevina-1778412.jpg);">
+<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+<h2 class="caption1-slide1 xl-text2 t-center bo14 p-b-6 animated visible-false m-b-22" data-appear="rollIn">
+Leather Bags
+</h2>
+<span class="caption2-slide1 m-text1 t-center animated visible-false m-b-33" data-appear="lightSpeedIn">
+                        New Collection 2024
+</span>
+<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="slideInUp">
+
+                        <a asp-controller="Home" asp-action="Product" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+Shop Now
+</a>
+</div>
+</div>
+</div>
+            <div class="item-slick1 item3-slick1" style="background-image: url(/assets/images/pexels-pixabay-325876.jpg);">
+<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+<h2 class="caption1-slide1 xl-text2 t-center bo14 p-b-6 animated visible-false m-b-22" data-appear="rotateInDownLeft">
+Leather Bags
+</h2>
+<span class="caption2-slide1 m-text1 t-center animated visible-false m-b-33" data-appear="rotateInUpRight">
+                        New Collection 2024
+</span>
+<div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="rotateIn">
+
+                        <a asp-controller="Home" asp-action="Product" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+Shop Now
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="bgwhite p-t-45 p-b-58">
+<div class="container">
+<div class="sec-title p-b-22">
+<h3 class="m-text5 t-center">
+Our Products
+</h3>
+</div>
+
+<div class="tab01">
+
+
+<div class="tab-content p-t-35">
+@using System.Security.Claims;
+
+<div class="tab-pane fade show active" id="best-seller" role="tabpanel">
+<div class="row">
+
+
+                        @foreach (var item in Model.Product)
+                        {
+                            bool likeid = false;
+                            var userid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                            if (userid != null)
+                            {
+                                if (Model.ProductLike != null)
+                                {
+                                    foreach (var like in Model.ProductLike)
+                                    {
+                                        if (like.PlProdId == item.PId && like.PlUser == int.Parse(userid))
+                                        {
+                                            likeid = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            <div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+                                <div class="block2">
+                                    <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+                                        <img src="~/@item.PImage" alt="IMG-PRODUCT" style="aspect-ratio:4/5;">
+                                        <div class="block2-overlay trans-0-4">
+                                          @{
+                                                var color = likeid ? "#e65540" : "white";
+                                           }
+                                                <a asp-route-id="@item.PId" asp-action="ProductLike" class="" style="display: block; position: absolute; top: 26px; right: 20px; font-size: 20px; color: @color; line-height: 0;">
+                           
+                                                    <i class="icon-wishlist icon_heart dis-none" style="color:@color !important;display:block!important" aria-hidden="true"></i>
+                                                </a>
+                                            
+                                            <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                <a asp-controller="Home" asp-action="AddtoCart" asp-route-id="@item.PId" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                    Add to Cart
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block2-txt p-t-20">
+                                        <a class="block2-name dis-block s-text3 p-b-5">
+                                            @item.PName
+                                        </a>
+                                        <span class="block2-price m-text6 p-r-5">
+                                            $@item.PPrice
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                              
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="parallax0 parallax100" style="background-image: url(/assets/images/bg-video-01.jpg);">
+<div class="overlay0 p-t-190 p-b-200">
+<div class="flex-col-c-m p-l-15 p-r-15">
+<span class="m-text9 p-t-45 fs-20-sm">
+The Beauty
+</span>
+<h3 class="l-text1 fs-35-sm">
+Lookbook
+</h3>
+
+</div>
+</div>
+</section>
+
+<section class="blog bgwhite p-t-94 p-b-65">
+<div class="container">
+<div class="sec-title p-b-52">
+<h3 class="m-text5 t-center">
+Our Blog
+</h3>
+</div>
+<div class="row">
+
+
+    @foreach(var item in Model.Blog)
+            {
+                
+            
+            <div class="col-sm-10 col-md-4 p-b-30 m-l-r-auto">
+
+<div class="block3">
+<a asp-controller="Home" asp-action="Blog_Detail" asp-route-id="@item.BId"  class="block3-img dis-block hov-img-zoom">
+<img src="~/@item.BImage" alt="IMG-BLOG">
+</a>
+<div class="block3-txt p-t-14">
+<h4 class="p-b-7">
+<a asp-controller="Home" asp-action="Blog_Detail" asp-route-id="@item.BId" class="m-text11">
+@item.BTitle
+</a>
+</h4>
+<span class="s-text6">By</span> <span class="s-text7">Admin</span>
+                            <span class="s-text6">on</span> <span class="s-text7">
+                                @{
+                                    if (item.BDate.HasValue)
+                                    {
+                                        @item.BDate.Value.ToString("yyyy-MM-dd")
+                                    }
+                                    else
+                                    {
+                                        @String.Empty
+                                    }
+                                }
+                            </span>
+<p class="s-text8 p-t-16">
+    @item.BDesc
+</p>
+</div>
+</div>
+</div>
+}
+
+</div>
+</div>
+</section>
+

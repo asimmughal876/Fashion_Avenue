@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Fetch Coupon";
+}
+@model IEnumerable<Fashion_Avenue.Models.Coupon>
+<section class="main_content dashboard_part">
+
+    <div class="main_content_iner ">
+        <div class="container-fluid plr_30 body_white_bg pt_30">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="QA_section">
+                        <div class="white_box_tittle list_header">
+                            <h4>Table</h4>
+                        </div>
+                        <div class="QA_table ">
+
+                            <table class="table lms_table_active">
+                                <thead>
+                                    <tr>
+                                        <th>Coupon Code</th>
+                                        <th>Coupon Discount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            @if (TempData.ContainsKey("C_Fetch Mess"))
+                                            {
+                                                <td class="text-danger fw-bold">@TempData["C_Fetch Mess"]</td>
+                                            }
+                                            <td>@item.CName</td>
+                                            <td>%@item.CDiscount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @if (TempData.ContainsKey("CP_Mess"))
+    {
+        var A_M = TempData["CP_Mess"];
+        <script>
+            alert("@A_M");
+        </script>
+    }
+    @if (TempData.ContainsKey("U_Catg"))
+    {
+        var U_M = TempData["U_Catg"];
+        <script>
+            alert("@U_M");
+        </script>
+    }
+
+    <div class="footer_part">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="footer_iner text-center">
+                        <p>2020 © Influence - Designed by<a href="#"> Dashboard</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

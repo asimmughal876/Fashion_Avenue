@@ -1,0 +1,45 @@
+﻿<link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="~/assets/css/slicknav.css">
+<link rel="stylesheet" href="~/assets/css/flaticon.css">
+<link rel="stylesheet" href="~/assets/css/animate.min.css">
+<link rel="stylesheet" href="~/assets/css/price_rangs.css">
+<link rel="stylesheet" href="~/assets/css/magnific-popup.css">
+<link rel="stylesheet" href="~/assets/css/themify-icons.css">
+<link rel="stylesheet" href="~/assets/css/slick.css">
+<link rel="stylesheet" href="~/assets/css/nice-select.css">
+<link rel="stylesheet" href="~/assets/css/style.css">
+@model Fashion_Avenue.Models.UserRecord
+<main class="login-bg">
+    <div class="register-form-area">
+        <div class="register-form text-center">
+            <div class="register-heading">
+                <span>Sign Up</span>
+                <p class="text-danger fw-bold">@TempData["Message"]</p>
+            </div>
+            <div class="input-box">
+                <form method="post">
+                    <div class="single-input-fields">
+                        <label>Full name</label>
+                        <input type="text" asp-for="UName" class="form-control" placeholder="Enter full name" required>
+  
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Email Address</label>
+                        <input type="email" asp-for="UEmail" class="form-control" placeholder="Enter Email" required>
+             
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Password</label>
+                        <input type="password" asp-for="UPass" class="form-control" placeholder="Enter Password" required>
+                
+                    </div>
+                    <div class="register-footer">
+                        <p>Already have an account? <a asp-controller="Home" asp-action="Login">Login</a> here</p>
+                        <button class="submit-btn3" style="background-color: #E65642;">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

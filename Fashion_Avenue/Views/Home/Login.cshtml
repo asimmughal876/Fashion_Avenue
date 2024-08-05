@@ -1,0 +1,51 @@
+﻿@if (TempData.ContainsKey("Message"))
+{
+    var A_M = TempData["Message"];
+    <script>
+        alert("@A_M");
+    </script>
+}
+<link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="~/assets/css/slicknav.css">
+<link rel="stylesheet" href="~/assets/css/flaticon.css">
+<link rel="stylesheet" href="~/assets/css/animate.min.css">
+<link rel="stylesheet" href="~/assets/css/price_rangs.css">
+<link rel="stylesheet" href="~/assets/css/magnific-popup.css">
+<link rel="stylesheet" href="~/assets/css/themify-icons.css">
+<link rel="stylesheet" href="~/assets/css/slick.css">
+<link rel="stylesheet" href="~/assets/css/nice-select.css">
+<link rel="stylesheet" href="~/assets/css/style.css">
+@model Fashion_Avenue.Models.UserRecord
+<main class="login-bg">
+
+    <div class="login-form-area">
+        <div class="login-form">
+
+            <div class="login-heading">
+                <span>Login</span>
+                <p>Enter Login details to get access</p>
+            </div>
+
+            <div class="input-box">
+                <form method="post">
+                <div class="single-input-fields">
+                    <label>Email</label>
+                    <input type="email" asp-for="UEmail"  class="form-control" placeholder="Enter Email" required>
+                </div>
+                <div class="single-input-fields">
+                    <label>Password</label>
+                    <input type="password" asp-for="UPass" class="form-control" placeholder="Enter Password" required>
+                </div>
+
+
+                <div class="login-footer">
+                        <p>Don’t have an account? <a asp-controller="Home" asp-action="SignUp">Sign Up</a> here</p>
+                    <button class="submit-btn3" style="background-color: #E65642;">Login</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
+</main>
+

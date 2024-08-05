@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "About";
+}
+@model Fashion_Avenue.Models.About
+<section class="main_content dashboard_part">
+
+    <div class="main_content_iner ">
+        <div class="container-fluid plr_30 body_white_bg pt_30">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="box_header ">
+                        <div class="main-title">
+                            <h3 class="mb-0">About Form</h3>
+                        </div>
+                    </div>
+                    <div class="white_box mb_30">
+
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" asp-for="ATitle" required placeholder="About Tiltle">
+                            </div>
+
+
+                            <p class="text-danger fw-bold">@TempData["Img_Mess"]</p>
+                            <div class="input-group mb-3">
+
+                                <input type="file" class="form-control" name="file" required>
+                                <label class="input-group-text">Upload Image</label>
+                            </div>
+                            <div class="mb-3">
+                                <textarea type="text" class="form-control" rows="10" asp-for="ADesc" required placeholder="About Desciption"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn d-flex m-auto" style="background-color:#E65540;color:white">SUBMIT</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

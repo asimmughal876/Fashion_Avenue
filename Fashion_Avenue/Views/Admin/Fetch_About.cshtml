@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Fetch About";
+}
+@model IEnumerable<Fashion_Avenue.Models.About>
+<section class="main_content dashboard_part">
+
+    <div class="main_content_iner ">
+        <div class="container-fluid plr_30 body_white_bg pt_30">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="QA_section">
+                        <div class="white_box_tittle list_header">
+                            <h4>Table</h4>
+                        </div>
+                        <div class="QA_table ">
+
+                            <table class="table lms_table_active" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>About Title</th>
+                                        <th>About Image</th>
+                                        <th>About Description</th>
+                                        <th>Update</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            @if (TempData.ContainsKey("A_Fetch_Mess"))
+                                            {
+                                                <td class="text-danger fw-bold">@TempData["A_Fetch_Mess"]</td>
+                                            }
+                                            <td>@item.ATitle</td>
+                                            <td><img src="~/@item.AImage" width="100" height="100" /></td>
+                                            <td>@item.ADesc</td>
+
+                                            <td><a asp-controller="Admin" asp-action="Edit_About" asp-route-id="@item.AId" class="btn btn-success text-white">Update</a></td>
+                                            <td><a asp-controller="Admin" asp-action="Delete_About" asp-route-id="@item.AId" class="btn btn-danger text-white">Delete</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData.ContainsKey("D_about"))
+    {
+        var D_M = TempData["D_about"];
+        <script>
+            alert("@D_M");
+        </script>
+    }
+
+    @if (TempData.ContainsKey("Add_about"))
+    {
+        var A_M = TempData["Add_about"];
+        <script>
+            alert("@A_M");
+        </script>
+    }
+    @if (TempData.ContainsKey("U_About"))
+    {
+        var U_M = TempData["U_About"];
+        <script>
+            alert("@U_M");
+        </script>
+    }
+
+    <div class="footer_part">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="footer_iner text-center">
+                        <p>2020 © Influence - Designed by<a href="#"> Dashboard</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Product Color";
+}
+@model Fashion_Avenue.Models.ProductColor
+<section class="main_content dashboard_part">
+
+    <div class="main_content_iner ">
+        <div class="container-fluid plr_30 body_white_bg pt_30">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="box_header ">
+                        <div class="main-title">
+                            <h3 class="mb-0">Color Form</h3>
+                        </div>
+                    </div>
+                    <div class="white_box mb_30">
+
+                        <form method="post">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" asp-for="PcColor" placeholder="Color Name">
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn d-flex m-auto" style="background-color:#E65540;color:white">SUBMIT</button>
+                            </div>
+
+                            <p class="text-danger fw-bold">@TempData["Color_Mess"]</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+

@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "Blog-Detail";
+
+}
+
+@model Fashion_Avenue.Models.IndexModel
+<section class="bgwhite p-t-60 p-b-25">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 p-b-80">
+                <div class="p-r-50 p-r-0-lg">
+                    <div class="p-b-40">
+                        <p class="fw-bold text-danger">@TempData["Blog_error"]</p>
+
+                        <div class="blog-detail-img wrap-pic-w">
+                            <img src="~/@Model.BlogDetail.BImage" alt="IMG-BLOG">
+                        </div>
+                        <div class="blog-detail-txt p-t-33">
+                            <h4 class="p-b-11 m-text24">
+                                @Model.BlogDetail.BTitle
+                            </h4>
+                            <div class="s-text8 flex-w flex-m p-b-21">
+                                <span>
+                                    By Admin
+                                    <span class="m-l-3 m-r-6">|</span>
+                                </span>
+                                <span>
+                                    @{
+                                        if (Model.BlogDetail.BDate.HasValue)
+                                        {
+                                            @Model.BlogDetail.BDate.Value.ToString("yyyy-MM-dd")
+                                        }
+                                        else
+                                        {
+                                            @String.Empty
+                                        }
+                                    }
+                                    <span class="m-l-3 m-r-6">|</span>
+                                </span>
+                               
+                                @{
+
+                                    var commentCount = Model.BlogComment.Count(comment => comment.BlogId == Model.BlogDetail.BId);
+                                }
+                                <span>
+                                    @commentCount Comment
+                                </span>
+                                
+                            </div>
+                            <p class="p-b-25">
+                                @Model.BlogDetail.BDesc
+                            </p>
+                        </div>
+                        <h4 class="m-text25 p-b-14">
+                            Blog Comments
+                        </h4>
+                        @foreach(var item in Model.BlogComment)
+                        {
+                        <div class="flex-m flex-w p-t-20">
+                            <span class="s-text20 p-r-20" style="font-weight:bolder; color:black;">
+                                @item.Blo.UName :
+                            </span>
+                            <div class="flex-w">
+                                   @item.BlogCName
+                                
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <form class="leave-comment" method="post" >
+                        <h4 class="m-text25 p-b-14">
+                            Leave a Comment
+                        </h4>
+                        <p class="fw-bold text-danger">@TempData["Blog_C_error"]</p>
+
+<textarea class="dis-block s-text7 size18 bo12 p-l-18 p-r-18 p-t-13 m-b-20" name="comment" placeholder="Comment..." required></textarea>
+                        <input type="hidden" value="@Model.BlogDetail.BId" name="id" />
+                        <div class="w-size24">
+
+                            <button type="submit" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4 text-white">
+                                Post Comment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+                </div>
+            </div>
+</section>
