@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 
 namespace Fashion_Avenue.Controllers
 {
@@ -306,30 +307,24 @@ namespace Fashion_Avenue.Controllers
             bool isAuthenticate = false;
             if (data != null)
             {
-
-                if (data.URoleId == 101)
+                var role = "";
+                if(data.URoleId == 101)
                 {
-                    identity = new ClaimsIdentity(new[]
-                    {
-               new Claim(ClaimTypes.Name, data.UName),
-               new Claim(ClaimTypes.Email, data.UEmail),
-                new Claim(ClaimTypes.NameIdentifier, data.UId.ToString()),
-               new Claim(ClaimTypes.Role,"Admin")
-           }, CookieAuthenticationDefaults.AuthenticationScheme);
-                    isAuthenticate = true;
+                     role = "Admin";
                 }
                 else
                 {
-                    identity = new ClaimsIdentity(new[]
-                 {
-              new Claim(ClaimTypes.Name, data.UName),
+                     role = "User";
+                }
+                identity = new ClaimsIdentity(new[]
+                {
+               new Claim(ClaimTypes.Name, data.UName),
                new Claim(ClaimTypes.Email, data.UEmail),
                 new Claim(ClaimTypes.NameIdentifier, data.UId.ToString()),
-               new Claim(ClaimTypes.Role,"User")
-
-           }, CookieAuthenticationDefaults.AuthenticationScheme);
+                    new Claim(ClaimTypes.Role, role)
+                }, 
+               CookieAuthenticationDefaults.AuthenticationScheme);
                     isAuthenticate = true;
-                }
                 if (isAuthenticate)
                 {
                     var principal = new ClaimsPrincipal(identity);
@@ -341,11 +336,11 @@ namespace Fashion_Avenue.Controllers
                     }
                     else
                     {
-                        TempData["Login"] = "Login Successfully";
+                        TempData["Login"] = "Login Successfully.";
                         return RedirectToAction("Index", "Home");
                     }
                 }
-            }
+                }
             return View();
         }
         public IActionResult Logout()
@@ -371,7 +366,7 @@ namespace Fashion_Avenue.Controllers
                     user.URoleId = 102;
                     db.Add(user);
                     db.SaveChanges();
-                    TempData["Message"] = "User Registered Successfully..";
+                    TempData["Message"] = "User Registered Successfully.";
                     return RedirectToAction(nameof(Login));
                 }
                 else
