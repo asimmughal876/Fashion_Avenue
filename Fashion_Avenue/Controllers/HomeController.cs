@@ -160,8 +160,31 @@ namespace Fashion_Avenue.Controllers
             }
             return Redirect(Request.Headers["Referer"].ToString());
         }
+        [HttpGet]
+        public IActionResult Track_Order()
+        {
+            try
+            {
+                var nameIdentifierClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                var userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-        public IActionResult Cart()
+                if (nameIdentifierClaim != null) {
+                var orders = db.OrderItems.Include(o=> o.OrderItemsOrder).Include(p=> p.OrderItemsProd).Where(u=> u.OrderItemsOrder.OrderUserId == userid).ToList();
+                    return View(orders);
+                }
+                else{
+                    TempData["order"] = "Login in Required for Tracking Orders";
+                    return RedirectToAction(nameof(Index));
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                TempData["error"] = ex.Message;
+            }
+            return View();
+        }
+            public IActionResult Cart()
         {
             var nameIdentifierClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (nameIdentifierClaim != null)

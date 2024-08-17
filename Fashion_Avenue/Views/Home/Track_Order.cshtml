@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Track Order";
+}
+
+
+
+@model IEnumerable<Fashion_Avenue.Models.OrderItem>
+<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(/assets/images/heading-pages-01.jpg);">
+    <h2 class="l-text2 t-center">
+        Track Order
+    </h2>
+</section>
+
+<section class="cart bgwhite p-t-70 p-b-100">
+    <div class="container">
+
+        <div class="container-table-cart pos-relative">
+            <div class="wrap-table-shopping-cart bgwhite">
+                <table class="table-shopping-cart">
+                    <tr class="table-head">
+                        <th class="column-1">Image</th>
+                        <th class="column-2">Name</th>
+                        <th class="column-3">Price</th>
+                        <th class="column-4">Quantity</th>
+                        <th class="column-4">Date</th>
+                        <th class="column-5">Status</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        var p = item.OrderItemsQuantity * item.OrderItemsProd.PPrice;
+                        <tr class="table-row">
+                            <td class="column-1">
+                                <div class="cart-img-product b-rad-4 o-f-hidden">
+                                    <img src="~/@item.OrderItemsProd.PImage" alt="IMG-PRODUCT">
+                                </div>
+                            </td>
+                            <td class="column-2">@item.OrderItemsProd.PName</td>
+                            <td class="column-3">$@p</td>
+                            <td class="column-4">@item.OrderItemsQuantity</td>
+                            <td class="column-4">
+                                @{
+                                    if (item.OrderItemsOrder.OrderDate.HasValue)
+                                    {
+                                        @item.OrderItemsOrder.OrderDate.Value.ToString("yyyy-MM-dd")
+                                    }
+                                    else
+                                    {
+                                        @String.Empty
+                                    }
+                                }
+                            </td>
+                            <td class="column-5"> @item.OrderItemsOrder.OrderStatus</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
