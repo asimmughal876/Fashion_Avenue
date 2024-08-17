@@ -1,7 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Track Order";
 }
+<style>
+    .centered-row {
+        text-align: center;
+        vertical-align: middle;
+    }
 
+</style>
 
 
 @model IEnumerable<Fashion_Avenue.Models.OrderItem>
@@ -25,6 +31,13 @@
                         <th class="column-4">Date</th>
                         <th class="column-5">Status</th>
                     </tr>
+                    @if (TempData.ContainsKey("o_count"))
+                    {
+                        <tr class="centered-row">
+                            <td colspan="6" class="text-danger">@TempData["o_count"]</td>
+                        </tr>
+                    }
+                    else{
                     @foreach (var item in Model)
                     {
                         var p = item.OrderItemsQuantity * item.OrderItemsProd.PPrice;
@@ -51,6 +64,7 @@
                             </td>
                             <td class="column-5"> @item.OrderItemsOrder.OrderStatus</td>
                         </tr>
+                    }
                     }
                 </table>
             </div>

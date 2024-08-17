@@ -37,6 +37,14 @@
         alert("@L_M");
     </script>
 }
+
+@if (TempData.ContainsKey("order"))
+{
+    var O_M = TempData["order"];
+    <script>
+        alert("@O_M");
+    </script>
+}
 <section class="slide1">
 <div class="wrap-slick1">
 <div class="slick1">

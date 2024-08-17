@@ -170,11 +170,17 @@ namespace Fashion_Avenue.Controllers
 
                 if (nameIdentifierClaim != null) {
                 var orders = db.OrderItems.Include(o=> o.OrderItemsOrder).Include(p=> p.OrderItemsProd).Where(u=> u.OrderItemsOrder.OrderUserId == userid).ToList();
+                    if(orders.Count == 0) {
+                        TempData["o_count"] = "No Results";
+                    }
+                    else
+                    {
+                        TempData.Remove("o_count");
+                    }
                     return View(orders);
                 }
                 else{
                     TempData["order"] = "Login in Required for Tracking Orders";
-                    return RedirectToAction(nameof(Index));
                 }
                 
             }
@@ -182,7 +188,7 @@ namespace Fashion_Avenue.Controllers
             {
                 TempData["error"] = ex.Message;
             }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
             public IActionResult Cart()
         {
