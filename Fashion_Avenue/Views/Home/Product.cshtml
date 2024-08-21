@@ -20,7 +20,6 @@
             var search = $("#search-product").val();
             var colorId = $(".color-filter.active").attr("id")?.split('_')[2] || 0;
             var catgId = $(".category-filter.active").attr("id")?.split('_')[2] || 0;
-
             $.ajax({
                 url: "/Home/Product",
                 type: "GET",
