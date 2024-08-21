@@ -45,6 +45,39 @@
         alert("@O_M");
     </script>
 }
+<script src="~/assets/js/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".Like-Filter", function () {
+            const id = $(this).attr("id");
+
+            $.ajax({
+                url: "/Home/ProductLike",
+                type: "GET",
+                data: { id: id }, 
+                success: function (response) {
+                    if (response.success) {
+                        $(".Like-Filter").each(function () {
+                            if ($(this).attr("id") == id) {
+                                var color = response.message === "Product has Been Liked" ? "#e65540" : "white";
+                                $(this).find('.icon-wishlist').css("color", color);
+                            }
+                        });
+                        $('#product-list').html($(response.data).find('#product-list').html());
+                        console.log(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("An error occurred: " + status + " " + error);
+                }
+            });
+        });
+    });
+</script>
+
+
 <section class="slide1">
 <div class="wrap-slick1">
 <div class="slick1">
@@ -147,7 +180,7 @@ Our Products
                                           @{
                                                 var color = likeid ? "#e65540" : "white";
                                            }
-                                                <a asp-route-id="@item.PId" asp-action="ProductLike" class="" style="display: block; position: absolute; top: 26px; right: 20px; font-size: 20px; color: @color; line-height: 0;">
+                                            <a class="Like-Filter" id="@item.PId" style="display: block; position: absolute; top: 26px; right: 20px; font-size: 20px; color:@color; line-height: 0;">
                            
                                                     <i class="icon-wishlist icon_heart dis-none" style="color:@color !important;display:block!important" aria-hidden="true"></i>
                                                 </a>
@@ -225,11 +258,11 @@ Our Blog
                                 @{
                                     if (item.BDate.HasValue)
                                     {
-                                        @item.BDate.Value.ToString("yyyy-MM-dd")
+                                                        @item.BDate.Value.ToString("yyyy-MM-dd")
                                     }
                                     else
                                     {
-                                        @String.Empty
+                                                        @String.Empty
                                     }
                                 }
                             </span>

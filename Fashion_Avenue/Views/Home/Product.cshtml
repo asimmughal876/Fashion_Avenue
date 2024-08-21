@@ -12,23 +12,55 @@
 
 <script type="text/javascript" src="~/assets/vendor/noui/nouislider.min.js"></script>
 <script src="~/assets/js/jquery.js"></script>
-
 <script>
     $(document).ready(function () {
+        $(document).on("click", ".Like-Filter", function () {
+            $(".Like-Filter").removeClass("active");
+            $(this).addClass("active");
+
+            const id = $(this).attr("id");
+
+            console.log("Clicked ID:", id);
+
+            $.ajax({
+                url: "/Home/ProductLike",
+                type: "GET",
+                data: { id },
+                success: function (response) {
+                    if (response.success) {
+                        $(".Like-Filter").each(function () {
+                            if ($(this).attr("id") == id) {
+                                var color = response.message === "Product has Been Liked" ? "#e65540" : "white";
+                                $(this).find('.icon-wishlist').css("color", color);
+                            }
+                        });
+                        $('#product-list').html($(response.data).find('#product-list').html());
+                        console.log(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX request failed:", error);
+                }
+            });
+        });
+
         function fetchProducts() {
             var sorting = $("#sorting").val();
             var search = $("#search-product").val();
             var colorId = $(".color-filter.active").attr("id")?.split('_')[2] || 0;
             var catgId = $(".category-filter.active").attr("id")?.split('_')[2] || 0;
+
             $.ajax({
                 url: "/Home/Product",
                 type: "GET",
-                data: { sorting: sorting, id: colorId, catgId: catgId, search: search },
+                data: { sorting: sorting, colorId: colorId, catgId: catgId, search: search },
                 success: function (data) {
                     $('#product-list').html($(data).find('#product-list').html());
                 },
                 error: function (xhr, status, error) {
-                    console.error(error);
+                    console.error("AJAX request failed:", error);
                 }
             });
         }
@@ -36,6 +68,7 @@
         $("#sorting").change(function () {
             fetchProducts();
         });
+
         $("#search-product").on('input', function () {
             fetchProducts();
         });
@@ -58,6 +91,8 @@
             fetchProducts();
         });
     });
+
+
 </script>
 
 <section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(/assets/images/heading-pages-02.jpg);">
@@ -65,7 +100,7 @@
         Women
     </h2>
     <p class="m-text13 t-center">
-        New Arrivals Women Collection 2018
+        New Arrivals Women Collection 2024
     </p>
 </section>
 
@@ -165,9 +200,11 @@
                                             @{
                                                 var color = likeid ? "#e65540" : "white";
                                             }
-                                            <a asp-controller="Home" asp-action="ProductLike" asp-route-id="@item.PId" class="" style="display: block; position: absolute; top: 26px; right: 20px;font-size: 20px;color: white;line-height: 0;">
-                                                <i class="icon-wishlist icon_heart" style="display:block !important;color:@color!important;" aria-hidden="true"></i>
+                                            <a class="Like-Filter" id="@item.PId" style="display: block; position: absolute; top: 26px; right: 20px; font-size: 20px; color: white; line-height: 0;">
+                                                <i class="icon-wishlist icon_heart" style="color: @color !important;" aria-hidden="true"></i>
                                             </a>
+
+
                                             <div class="block2-btn-addcart w-size1 trans-0-4">
                                                 <a asp-controller="Home" asp-action="AddtoCart" asp-route-id="@item.PId" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
                                                     Add to Cart

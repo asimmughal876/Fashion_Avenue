@@ -44,7 +44,7 @@ namespace Fashion_Avenue.Controllers
         }
 
         [HttpGet]
-        public IActionResult Product(string sorting, int id,int catgid,string search)
+        public IActionResult Product(string sorting, int colorId, int catgid,string search)
         {
             try
             {
@@ -67,9 +67,9 @@ namespace Fashion_Avenue.Controllers
                 {
                     productsQuery = productsQuery.OrderBy(p=> p.PId);
                 }
-                if (id > 0)
+                if (colorId > 0)
                 {
-                    productsQuery = productsQuery.Where(p => p.PColor == id);
+                    productsQuery = productsQuery.Where(p => p.PColor == colorId);
                 }
                 if(catgid >0)
                 {
@@ -97,7 +97,7 @@ namespace Fashion_Avenue.Controllers
             return View();
         }
 
-        public IActionResult ProductLike(ProductLike pl,int id, LikeCount Count)
+        public IActionResult ProductLike(ProductLike pl, int id, LikeCount Count)
         {
             try
             {
@@ -109,56 +109,46 @@ namespace Fashion_Avenue.Controllers
                     var Like = db.LikeCounts.FirstOrDefault(x => x.LcProdId == id);
                     if (data != null)
                     {
-                        if (Like != null)
+                        if (Like != null && Like.LcCount > 0)
                         {
-                            if (Like.LcCount > 0)
-                            {
-                                Like.LcCount--;
-                                db.Update(Like);
-                                db.SaveChanges();
-                            }
+                            Like.LcCount--;
+                            db.Update(Like);
                         }
                         db.Remove(data);
-                        db.SaveChanges();
                         TempData["Prod_Like"] = "Product Like Removed";
-
                     }
                     else
                     {
-
                         if (Like != null)
                         {
                             Like.LcCount++;
                             db.Update(Like);
-                            db.SaveChanges();
                         }
                         else
                         {
                             Count.LcCount = 1;
                             Count.LcProdId = id;
                             db.Add(Count);
-                            db.SaveChanges();
                         }
                         pl.PlProdId = id;
-                        pl.PlUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                        pl.PlUser = nameIdentifierClaim;
                         pl.PlCount = 1;
                         db.Add(pl);
-                        db.SaveChanges();
-                        TempData["Prod_Like"] = "Product has Been Like";
+                        TempData["Prod_Like"] = "Product has Been Liked";
                     }
-                   
+                    db.SaveChanges();
+                    return Json(new { success = true, message = TempData["Prod_Like"].ToString() });
                 }
                 else
                 {
-                    TempData["Prod_Like"] = "Login Is Required For Likes";
+                    return Json(new { success = false, message = "Login is required for likes." });
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["Prod_Like"] = ex.Message;
+                return Json(new { success = false, message = ex.Message });
             }
-            return Redirect(Request.Headers["Referer"].ToString());
         }
         [HttpGet]
         public IActionResult Track_Order()
