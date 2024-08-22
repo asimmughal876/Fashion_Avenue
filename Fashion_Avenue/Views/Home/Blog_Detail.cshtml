@@ -5,6 +5,40 @@
 }
 
 @model Fashion_Avenue.Models.IndexModel
+<script src="~/assets/js/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#commentForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("PostComment", "Home")',
+                data: $(this).serialize(), 
+                success: function (response) {
+                    if (response.success) {
+                        var newCommentHtml = '<div class="flex-m flex-w p-t-20">' +
+                            '<span class="s-text20 p-r-20" style="font-weight:bolder; color:black;">' +
+                            response.comment.userName + ' : </span>' +
+                            '<div class="flex-w">' + response.comment.commentText + '</div></div>';
+
+                        $('#commentsSection').append(newCommentHtml);
+
+                        $('textarea[name="comment"]').val('');
+
+                        alert(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Error posting comment: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
 <section class="bgwhite p-t-60 p-b-25">
     <div class="container">
         <div class="row">
@@ -29,11 +63,11 @@
                                     @{
                                         if (Model.BlogDetail.BDate.HasValue)
                                         {
-                                            @Model.BlogDetail.BDate.Value.ToString("yyyy-MM-dd")
+                                                    @Model.BlogDetail.BDate.Value.ToString("yyyy-MM-dd")
                                         }
                                         else
                                         {
-                                            @String.Empty
+                                                    @String.Empty
                                         }
                                     }
                                     <span class="m-l-3 m-r-6">|</span>
@@ -55,9 +89,10 @@
                         <h4 class="m-text25 p-b-14">
                             Blog Comments
                         </h4>
+                        <div id="commentsSection">
                         @foreach(var item in Model.BlogComment)
                         {
-                        <div class="flex-m flex-w p-t-20">
+                            <div class="flex-m flex-w p-t-20">
                             <span class="s-text20 p-r-20" style="font-weight:bolder; color:black;">
                                 @item.Blo.UName :
                             </span>
@@ -67,9 +102,10 @@
                             </div>
                         </div>
                         }
+                        </div>
                     </div>
 
-                    <form class="leave-comment" method="post" >
+                    <form class="leave-comment" id="commentForm" method="post">
                         <h4 class="m-text25 p-b-14">
                             Leave a Comment
                         </h4>

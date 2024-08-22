@@ -463,7 +463,7 @@ namespace Fashion_Avenue.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Blog_Detail(int id,BlogComment b_comm,string comment)
+        public IActionResult PostComment(int id, BlogComment b_comm, string comment)
         {
             try
             {
@@ -475,18 +475,30 @@ namespace Fashion_Avenue.Controllers
                     b_comm.BlogCName = comment;
                     db.Add(b_comm);
                     db.SaveChanges();
+                    TempData["Blog_Comm"] = "Comment posted successfully";
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = TempData["Blog_Comm"],
+                        comment = new
+                        {
+                            userName = User.Identity.Name,
+                            commentText = comment
+                        }
+                    });
                 }
                 else
                 {
-                    TempData["Blog_C_error"] = "Login is Required for Comments";
+                    return Json(new { success = false, message = "Login is Required for Comment" });
                 }
             }
             catch (Exception ex)
             {
-                TempData["Blog_C_error"] = ex.Message;
+                return Json(new { success = false, message = ex.Message });
             }
-            return RedirectToAction(nameof(Blog_Detail));
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
