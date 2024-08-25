@@ -170,7 +170,7 @@ namespace Fashion_Avenue.Controllers
                     return View(orders);
                 }
                 else{
-                    TempData["order"] = "Login in Required for Tracking Orders";
+                    TempData["order"] = "Login is Required for Tracking Orders";
                 }
                 
             }
@@ -194,7 +194,7 @@ namespace Fashion_Avenue.Controllers
                 return View();
             }
             else {
-                TempData["Reuire_Login"] = "Login Is Required For Cart Page";
+                TempData["Require_Login"] = "Login Is Required For Cart Page";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -288,11 +288,11 @@ namespace Fashion_Avenue.Controllers
             if (coupon != null)
             {
                 var user_Id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value); 
-                var u_coupon = db.UsedCoupons.FirstOrDefault(u => u.UcUserId == user_Id);
+                var u_coupon = db.UsedCoupons.FirstOrDefault(u => u.UcUserId == user_Id && coupon.CId == u.UcCouponId);
                 if (u_coupon == null)
                 {
                     Uc.UcCouponId = coupon.CId;
-                    Uc.UcUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    Uc.UcUserId = user_Id;
                     TempData["Total"] = coupon.CDiscount.ToString();
                     db.Add(Uc);
                     db.SaveChanges();
@@ -326,7 +326,7 @@ namespace Fashion_Avenue.Controllers
             bool isAuthenticate = false;
             if (data != null)
             {
-                var role = "";
+                string role;
                 if(data.URoleId == 101)
                 {
                      role = "Admin";

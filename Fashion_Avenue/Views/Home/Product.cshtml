@@ -1,13 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Product";
 }
-@if (TempData.ContainsKey("Prod_Like"))
-{
-    var PL_M = TempData["Prod_Like"];
-    <script>
-        alert("@PL_M");
-    </script>
-}
+
 @model Fashion_Avenue.Models.IndexModel
 
 <script type="text/javascript" src="~/assets/vendor/noui/nouislider.min.js"></script>

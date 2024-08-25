@@ -14,18 +14,19 @@
        TempData.Remove("admin");
    }
 
-@if (TempData.ContainsKey("Prod_Like"))
-{
-    var PL_M = TempData["Prod_Like"];
-    <script>
-        alert("@PL_M");
-    </script>
-}
 @if (TempData.ContainsKey("Cart"))
 {
     var C_M = TempData["Cart"];
     <script>
         alert("@C_M");
+    </script>
+}
+
+@if (TempData.ContainsKey("Require_Login"))
+{
+    var C_L = TempData["Require_Login"];
+    <script>
+        alert("@C_L");
     </script>
 }
 
